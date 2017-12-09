@@ -8,6 +8,8 @@ using NewsService.DAL.Repositories;
 using NewsService.DAL.Validation;
 using NewsService.DAL.Models;
 using Newtonsoft.Json;
+using AutoMapper;
+using NewsService.BL.Services;
 
 namespace NewsService
 {
@@ -23,17 +25,18 @@ namespace NewsService
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().AddJsonOptions(options =>
+            services.AddMvc(setup =>
+            {
+
+            }).AddFluentValidation().AddJsonOptions(options =>
             {
                 options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
             });
 
-            services.AddMvc(setup =>
-            {
-
-            }).AddFluentValidation();
+            services.AddAutoMapper();
 
             services.AddTransient<INewsRepository, NewsRepository>();
+            services.AddTransient<INewsService, BL.Services.NewsService>();
 
             services.AddTransient<IValidator<News>, NewsValidator>();
         }

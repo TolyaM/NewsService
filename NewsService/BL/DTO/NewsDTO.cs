@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-namespace NewsService.DAL.Models
+namespace NewsService.BL.DTO
 {
     #region Enumeration
     public enum Category
@@ -14,7 +13,7 @@ namespace NewsService.DAL.Models
     }
     #endregion
 
-    public class News
+    public class NewsDTO
     {
         #region Properties
         public long Id { get; set; }

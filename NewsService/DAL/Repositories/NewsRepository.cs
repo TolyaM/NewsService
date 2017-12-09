@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Threading.Tasks;
 using Dapper;
 using Microsoft.Extensions.Configuration;
 using MySql.Data.MySqlClient;
+using NewsService.BL.DTO;
 using NewsService.DAL.Models;
 
 namespace NewsService.DAL.Repositories
@@ -17,12 +19,9 @@ namespace NewsService.DAL.Repositories
             _connectionString = configuration["connectionString"];
         }
 
-        private IDbConnection Connection
-        {
-            get { return new MySqlConnection(_connectionString); }
-        }
+        private IDbConnection Connection => new MySqlConnection(_connectionString);
 
-        public async Task Add(News news)
+        public async Task CreateNews(News news)
         {
             using (IDbConnection dbConnection = Connection)
             {
@@ -33,7 +32,7 @@ namespace NewsService.DAL.Repositories
             }
         }
 
-        public async Task<IEnumerable<News>> GetAll()
+        public async Task<IEnumerable<News>> GetAllNews()
         {
             using (IDbConnection dbConnection = Connection)
             {
@@ -42,7 +41,7 @@ namespace NewsService.DAL.Repositories
             }
         }
 
-        public async Task<News> GetById(long id)
+        public async Task<News> GetByIdNews(long id)
         {
             using (IDbConnection dbConnection = Connection)
             {
@@ -54,7 +53,7 @@ namespace NewsService.DAL.Repositories
             }
         }
 
-        public async Task Delete(long id)
+        public async Task DeleteNews(long id)
         {
             using (IDbConnection dbConnection = Connection)
             {
@@ -65,7 +64,7 @@ namespace NewsService.DAL.Repositories
             }
         }
 
-        public async Task Update(News news)
+        public async Task UpdateNews(News news)
         {
             using (IDbConnection dbConnection = Connection)
             {
@@ -73,7 +72,25 @@ namespace NewsService.DAL.Repositories
                                 + " Heading = @Heading, Text = @Text,"
                                 + "  Date = @Date, WHERE Id = @Id";
                 dbConnection.Open();
-                await dbConnection.QueryAsync(sQuery, news);
+                await dbConnection.QueryAsync(sQuery, news); 
+            }
+        }
+
+        public async Task<IEnumerable<News>> GetImportantNews()
+        {
+            using (IDbConnection dbConnection = Connection)
+            {
+                dbConnection.Open();
+                return await dbConnection.QueryAsync<News>("SELECT * FROM news WHERE news.Category = 'Important'");
+            }
+        }
+
+        public async Task<IEnumerable<News>> GetDailyNews()
+        {
+            using (IDbConnection dbConnection = Connection)
+            {
+                dbConnection.Open();
+                return await dbConnection.QueryAsync<News>("SELECT * FROM news WHERE news.Category = 'Daily'");
             }
         }
     }

@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using NewsService.BL.DTO;
 using NewsService.DAL.Models;
 
 
@@ -7,10 +9,12 @@ namespace NewsService.DAL.Repositories
 {
     public interface INewsRepository
     {
-        Task Add(News news);
-        Task<IEnumerable<News>> GetAll();
-        Task<News> GetById(long id);
-        Task Delete(long id);
-        Task Update(News news);
+        Task CreateNews(News news);
+        Task<IEnumerable<News>> GetAllNews(); 
+        Task<IEnumerable<News>> GetImportantNews();
+        Task<IEnumerable<News>> GetDailyNews();
+        Task<News> GetByIdNews(long id);
+        Task DeleteNews(long id);
+        Task UpdateNews(News news);
     }
 }
