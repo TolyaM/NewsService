@@ -1,17 +1,20 @@
-﻿using FluentValidation;
-using FluentValidation.AspNetCore;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using NewsService.DAL.Repositories;
-using NewsService.DAL.Validation;
-using NewsService.DAL.Models;
-using Newtonsoft.Json;
-using AutoMapper;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using NewsService.BL.Services;
+using NewsService.DAL.Repositories;
+using Newtonsoft.Json;
+using Steeltoe.Discovery.Client;
 
-namespace NewsService
+namespace News_service
 {
     public class Startup
     {
@@ -22,13 +25,20 @@ namespace NewsService
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc(setup =>
+            services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
             {
+                builder.AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .AllowAnyOrigin()
+                    .AllowCredentials();
+            }));
 
-            }).AddFluentValidation().AddJsonOptions(options =>
+            services.AddDiscoveryClient(Configuration);
+
+            services.AddMvc().AddJsonOptions(options =>
             {
                 options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
             });
@@ -36,12 +46,9 @@ namespace NewsService
             services.AddAutoMapper();
 
             services.AddTransient<INewsRepository, NewsRepository>();
-            services.AddTransient<INewsService, BL.Services.NewsService>();
-
-            services.AddTransient<IValidator<News>, NewsValidator>();
+            services.AddTransient<INewsService, NewsService.BL.Services.NewsService>();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             if (env.IsDevelopment())
@@ -49,7 +56,9 @@ namespace NewsService
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseCors("MyPolicy");
             app.UseMvc();
+            app.UseDiscoveryClient();
         }
     }
 }

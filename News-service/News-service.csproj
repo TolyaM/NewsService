@@ -5,20 +5,17 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="DAL\Models\NewsPaginationViewModel.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Folder Include="wwwroot\" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="6.2.1" />
+    <PackageReference Include="AutoMapper" Version="6.2.2" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="3.2.0" />
     <PackageReference Include="Dapper" Version="1.50.4" />
-    <PackageReference Include="FluentValidation.AspNetCore" Version="7.2.1" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
-    <PackageReference Include="MySqlConnector" Version="0.33.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Cors" Version="2.0.1" />
+    <PackageReference Include="MySqlConnector" Version="0.34.2" />
+    <PackageReference Include="Steeltoe.Discovery.Client" Version="1.1.0" />
   </ItemGroup>
 
   <ItemGroup>
