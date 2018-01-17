@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using NewsService.BL.DTO;
@@ -13,14 +11,11 @@ namespace NewsService.BL.Services
     {
         private readonly INewsRepository _newsRepository;
 
-        public NewsService(INewsRepository newsRepository)
-        {
-            _newsRepository = newsRepository;
-        }
+        public NewsService(INewsRepository newsRepository) => _newsRepository = newsRepository;
 
-        public async Task CreateNews(NewsDTO newsDTO)
+        public async Task CreateNews(NewsDTO newsDto)
         {
-            var news =  Mapper.Map<NewsDTO, News>(newsDTO);
+            var news =  Mapper.Map<NewsDTO, News>(newsDto);
             await _newsRepository.CreateNews(news);
         }
 
@@ -48,14 +43,11 @@ namespace NewsService.BL.Services
             return Mapper.Map<News, NewsDTO>(news);
         }
 
-        public async Task DeleteNews(long id)
-        {
-            await _newsRepository.DeleteNews(id);
-        }
+        public async Task DeleteNews(long id) => await _newsRepository.DeleteNews(id);
 
-        public async Task UpdateNews(NewsDTO newsDTO)
+        public async Task UpdateNews(NewsDTO newsDto)
         {
-            var news = Mapper.Map<NewsDTO, News>(newsDTO);
+            var news = Mapper.Map<NewsDTO, News>(newsDto);
             await _newsRepository.UpdateNews(news);
         }
     }

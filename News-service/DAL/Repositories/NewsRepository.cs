@@ -1,12 +1,10 @@
-﻿using System;
+﻿using Dapper;
+using Microsoft.Extensions.Configuration;
+using MySql.Data.MySqlClient;
+using NewsService.DAL.Models;
 using System.Collections.Generic;
 using System.Data;
 using System.Threading.Tasks;
-using Dapper;
-using Microsoft.Extensions.Configuration;
-using MySql.Data.MySqlClient;
-using NewsService.BL.DTO;
-using NewsService.DAL.Models;
 
 namespace NewsService.DAL.Repositories
 {
@@ -25,8 +23,8 @@ namespace NewsService.DAL.Repositories
         {
             using (IDbConnection dbConnection = Connection)
             {
-                string sQuery = "INSERT INTO news (Category, Heading, Text, Date)"
-                                + " VALUES(@Category, @Heading, @Text, @Date)";
+                string sQuery = "INSERT INTO news (Category, Heading, Text, DateCreate)"
+                                + " VALUES(@Category, @Heading, @Text, @DateCreate)";
                 dbConnection.Open();
                 await dbConnection.ExecuteAsync(sQuery, news);
             }
@@ -46,7 +44,7 @@ namespace NewsService.DAL.Repositories
             using (IDbConnection dbConnection = Connection)
             {
                 string sQuery = "SELECT * FROM news"
-                                + " WHERE Id = @Id";
+                                + " WHERE id = @id";
                 dbConnection.Open();
                 return await dbConnection.QueryFirstOrDefaultAsync<News>(sQuery, new { Id = id });
 
@@ -58,9 +56,9 @@ namespace NewsService.DAL.Repositories
             using (IDbConnection dbConnection = Connection)
             {
                 string sQuery = "DELETE FROM news"
-                                + " WHERE Id = @Id";
+                                + " WHERE id = @id";
                 dbConnection.Open();
-                await dbConnection.ExecuteAsync(sQuery, new { Id = id });
+                await dbConnection.ExecuteAsync(sQuery, new { id = id });
             }
         }
 
@@ -68,11 +66,9 @@ namespace NewsService.DAL.Repositories
         {
             using (IDbConnection dbConnection = Connection)
             {
-                string sQuery = "UPDATE news SET Category = @Category,"
-                                + " Heading = @Heading, Text = @Text,"
-                                + "  Date = @Date, WHERE Id = @Id";
+                string sQuery = "UPDATE news SET Category = @Category, Heading = @Heading, Text = @Text, DateCreate = @DateCreate WHERE Id = @id";
                 dbConnection.Open();
-                await dbConnection.QueryAsync(sQuery, news); 
+                await dbConnection.ExecuteAsync(sQuery, news); 
             }
         }
 

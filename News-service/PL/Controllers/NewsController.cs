@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using NewsService.BL.DTO;
@@ -16,7 +14,7 @@ namespace NewsService.PL.Controllers
 
         public NewsController(INewsService newsService)
         {
-            _newsService = newsService; 
+            _newsService = newsService;
         }
 
         //GET: api/news
@@ -26,18 +24,12 @@ namespace NewsService.PL.Controllers
         //GET: api/news/important
         [HttpGet]
         [Route("important")]
-        public async Task<IEnumerable<NewsDTO>> GetImportantNews()
-        {
-            return await _newsService.GetImportantNews();
-        }
+        public async Task<IEnumerable<NewsDTO>> GetImportantNews() => await _newsService.GetImportantNews();
 
         //GET: api/news/daily
         [HttpGet]
         [Route("daily")]
-        public async Task<IEnumerable<NewsDTO>> GetDailyNews()
-        {
-            return await _newsService.GetDailyNews();
-        }
+        public async Task<IEnumerable<NewsDTO>> GetDailyNews() => await _newsService.GetDailyNews();
 
         //GET api/news/5
         [HttpGet("{id:int}")]
@@ -55,7 +47,7 @@ namespace NewsService.PL.Controllers
         [HttpPut("{id:int}")]
         public async Task UpdateNews(long id, [FromBody]NewsDTO news)
         {
-            news.Id = id;
+            news.id = id;
             if (ModelState.IsValid) 
                 await _newsService.UpdateNews(news);
         }

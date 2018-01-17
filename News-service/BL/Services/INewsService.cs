@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using NewsService.BL.DTO;
-using NewsService.DAL.Models;
 
 namespace NewsService.BL.Services
 {

@@ -17,24 +17,25 @@ namespace NewsService.BL.DTO
     public class NewsDTO
     {
         #region Properties
-        public long Id { get; set; }
+        public long id { get; set; }
 
         #region Enumeration
-        [Required(ErrorMessage = "Please select News category")]
+        [Required(ErrorMessage = "Please select News category.")]
         [JsonConverter(typeof(StringEnumConverter))]
         public Category? Category { get; set; }
         #endregion
 
-        [Required(ErrorMessage = "Please enter News heading")]
+        [Required(ErrorMessage = "Please enter News heading.")]
         [StringLength(200, ErrorMessage = "The heading of news can not excced 200 characters")]
         public string Heading { get; set; }
 
 
-        [Required(ErrorMessage = "Please enter News text")]
+        [Required(ErrorMessage = "Please enter News text.")]
         [StringLength(2000, ErrorMessage = "The text of news can not excced 2000 characters")]
         public string Text { get; set; }
 
-        public DateTime? Date { get; set; }
+        [DataType(DataType.Date)]
+        public DateTime? DateCreate { get; set; }
         #endregion
     }
 }

@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using NewsService.BL.Services;
 using NewsService.DAL.Repositories;
 using Newtonsoft.Json;
@@ -36,14 +30,13 @@ namespace News_service
                     .AllowCredentials();
             }));
 
-            services.AddDiscoveryClient(Configuration);
-
             services.AddMvc().AddJsonOptions(options =>
             {
                 options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
             });
 
             services.AddAutoMapper();
+            services.AddDiscoveryClient(Configuration);
 
             services.AddTransient<INewsRepository, NewsRepository>();
             services.AddTransient<INewsService, NewsService.BL.Services.NewsService>();
